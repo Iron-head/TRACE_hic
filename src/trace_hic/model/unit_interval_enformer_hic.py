@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import torch
 
-from hic.model.enformer_hic_standalone import EnformerHiCModel
+from trace_hic.model.enformer_hic_standalone import EnformerHiCModel
 
 
 UNIT_INTERVAL_OUTPUT_ACTIVATION = "(tanh(x)+1)/2"

@@ -1,4 +1,4 @@
-"""Pretrained sparse Enformer consuming per-cell project RNA contexts."""
+"""Frozen SUCCEED backbone consuming per-cell RNA contexts."""
 
 from __future__ import annotations
 
@@ -9,17 +9,17 @@ import numpy as np
 import torch
 from torch import nn
 
-from hic.model.enformer_hic_standalone import (
+from trace_hic.model.enformer_hic_standalone import (
     ENFORMER_INPUT_BP,
     ENFORMER_OUTPUT_TOKENS,
     ENFORMER_TOKEN_BP,
 )
-from hic.model.sparse_transcriptome_enformer_hic_standalone import (
+from trace_hic.model.sparse_transcriptome_enformer_hic_standalone import (
     FrozenSparseTranscriptomeEnformerExtractor,
     _load_external_sparse_symbols,
     _load_sparse_checkpoint,
 )
-from hic.model.sparse_transcriptome_model_contract import (
+from trace_hic.model.sparse_transcriptome_model_contract import (
     CellTranscriptomeContext,
     SparseTranscriptomeModelContract,
 )

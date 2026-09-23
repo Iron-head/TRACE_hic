@@ -1,14 +1,4 @@
-"""Train a live multi-layer RNA-conditioned Enformer -> Hi-C model.
-
-This is a new entrypoint and deliberately does not modify or replace
-``train_corgi_hic_live.py``.  It keeps the current 10-kb resize Hi-C label
-pipeline, but replaces the frozen Corgi representation with the local
-multi-layer FiLM Enformer checkpoint from ``enfpcot``.
-
-The external Enformer weights are loaded at runtime and removed from saved
-Lightning checkpoints.  Only the Enformer-to-Hi-C projection, global module,
-pooling module, and Hi-C decoder are optimized in the initial stage.
-"""
+"""Shared live DNA and Hi-C utilities used by TRACE_hic training."""
 
 from __future__ import annotations
 
@@ -31,9 +21,9 @@ _SRC_DIR = _REPO_ROOT / "src"
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
-from hic.data.chromosome_dataset import ChromosomeDataset
-from hic.data.genome_dataset import GenomeDataset
-from hic.model.enformer_hic_standalone import (
+from trace_hic.data.chromosome_dataset import ChromosomeDataset
+from trace_hic.data.genome_dataset import GenomeDataset
+from trace_hic.model.enformer_hic_standalone import (
     ENFORMER_CONTEXT_BP,
     ENFORMER_FLANK_BP,
     HIC_MATRIX_SIZE,
@@ -44,7 +34,7 @@ from hic.model.enformer_hic_standalone import (
     FrozenMultiLayerEnformerExtractor,
     load_expression_npz,
 )
-from hic.training.hic_supervision import attach_hic_supervision_metadata
+from trace_hic.training.hic_supervision import attach_hic_supervision_metadata
 
 
 class LiveEnformerChromosomeDataset(ChromosomeDataset):
@@ -93,7 +83,7 @@ class LiveEnformerChromosomeDataset(ChromosomeDataset):
 
 
 class LiveEnformerGenomeDataset(GenomeDataset):
-    """Genome split matching the existing live-Corgi training protocol."""
+    """Genome split matching the existing live-SUCCEED training protocol."""
 
     def load_chrs(self, chr_names, genomic_features):
         print("Loading live multi-layer Enformer chromosome datasets...")
@@ -407,7 +397,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--enformer-root",
         default=str(_REPO_ROOT / "src"),
-        help="Checkout containing corgi_enformer_model/",
+        help="Checkout containing succeed_backbone/",
     )
     parser.add_argument(
         "--enformer-checkpoint",

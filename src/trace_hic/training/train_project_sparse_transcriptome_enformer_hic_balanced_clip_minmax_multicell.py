@@ -44,34 +44,34 @@ if str(_SRC_DIR) not in sys.path:
 
 _DEFAULT_ENFORMER_ROOT = _SRC_DIR
 
-from hic.data.multicell_live_enformer_dataset import (  # noqa: E402
+from trace_hic.data.multicell_live_enformer_dataset import (  # noqa: E402
     BalancedMultiCellLiveEnformerDataset,
     CellTypeContextSpec,
 )
-from hic.model.enformer_hic_standalone import (  # noqa: E402
+from trace_hic.model.enformer_hic_standalone import (  # noqa: E402
     HIC_MATRIX_SIZE,
     HIC_WINDOW_BP,
 )
-from hic.model.sparse_transcriptome_model_contract import (  # noqa: E402
+from trace_hic.model.sparse_transcriptome_model_contract import (  # noqa: E402
     SparseTranscriptomeModelContract,
 )
-from hic.model.unit_interval_enformer_hic import (  # noqa: E402
+from trace_hic.model.unit_interval_enformer_hic import (  # noqa: E402
     UNIT_INTERVAL_OUTPUT_ACTIVATION,
     UnitIntervalEnformerHiCModel,
 )
-from hic.training.hic_supervision import (  # noqa: E402
+from trace_hic.training.hic_supervision import (  # noqa: E402
     DEFAULT_TARGET_MATRIX_SIZE,
     DEFAULT_TARGET_WINDOW_BP,
     LEGACY_BIN_SIZE,
 )
-from hic.training.train_enformer_hic_live import (  # noqa: E402
+from trace_hic.training.train_enformer_hic_live import (  # noqa: E402
     _oe_pearson,
 )
-from hic.training.train_project_sparse_transcriptome_enformer_hic_multicell import (  # noqa: E402
+from trace_hic.training.train_project_sparse_transcriptome_enformer_hic_multicell import (  # noqa: E402
     LiveProjectSparseTranscriptomeMultiCellHiCModule,
     parse_project_celltypes,
 )
-from hic.training.train_sparse_transcriptome_enformer_hic_multicell import (  # noqa: E402
+from trace_hic.training.train_sparse_transcriptome_enformer_hic_multicell import (  # noqa: E402
     _invalid_regions_path as _base_invalid_regions_path,
     _preflight_celltype_data,
 )
@@ -639,8 +639,8 @@ def _loader(
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Balanced clipped window-minmax sparse-transcriptome "
-            "Enformer -> multi-cell Hi-C"
+            "Train TRACE_hic with the frozen SUCCEED backbone and "
+            "balanced clipped multi-cell Hi-C"
         )
     )
     parser.add_argument(
@@ -661,9 +661,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
             / "model_contract.json"
         ),
     )
-    parser.add_argument("--enformer-root", default=str(_DEFAULT_ENFORMER_ROOT))
     parser.add_argument(
-        "--enformer-checkpoint",
+        "--succeed-root", dest="enformer_root", metavar="PATH",
+        default=str(_DEFAULT_ENFORMER_ROOT),
+    )
+    parser.add_argument(
+        "--succeed-checkpoint", dest="enformer_checkpoint", metavar="PATH",
         default=str(
             _WORKSPACE_ROOT / "weights" / "stage1.pt"
         ),
@@ -673,7 +676,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         default=str(
             _WORKSPACE_ROOT
             / "results"
-            / "GM12878_IMR90_sparse_transcriptome_rna_hic_balanced_clip93_window_minmax_multicell"
+            / "TRACE_hic"
         ),
     )
     parser.add_argument(
@@ -691,7 +694,10 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--hic-label-clip-percentile", type=float, default=93.0)
     parser.add_argument("--max-invalid-bin-fraction", type=float, default=0.05)
     parser.add_argument("--min-diagonal-offset", type=int, default=2)
-    parser.add_argument("--enformer-tile-batch-size", type=int, default=2)
+    parser.add_argument(
+        "--succeed-tile-batch-size", dest="enformer_tile_batch_size",
+        type=int, default=2, metavar="N",
+    )
     parser.add_argument("--hidden", type=int, default=256)
     parser.add_argument("--pool-heads", type=int, default=8)
     parser.add_argument("--native-global-layers", type=int, default=2)

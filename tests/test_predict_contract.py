@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 import torch
 
-from hic.inference.predict import load_checkpoint, sequence_context
-from hic.model.enformer_hic_standalone import (
+from trace_hic.inference.predict import load_checkpoint, sequence_context
+from trace_hic.model.enformer_hic_standalone import (
     ENFORMER_CONTEXT_BP,
     ENFORMER_FLANK_BP,
     HIC_WINDOW_BP,

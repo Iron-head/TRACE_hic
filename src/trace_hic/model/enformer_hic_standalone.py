@@ -1,15 +1,7 @@
-"""RNA-conditioned multi-layer Enformer encoder for live Hi-C prediction.
+"""SUCCEED encoder geometry and the TRACE_hic prediction head.
 
-This module is intentionally additive.  It does not alter the existing Corgi
-implementation in :mod:`hic.model.corgi_hic_standalone` and is loaded by the
-separate ``train_enformer_hic_live.py`` entrypoint.
-
-The external checkpoint used by the first implementation is the local
-``pure_pytorch_multilayer_context_enformer`` checkpoint produced by the
-``enfpcot`` project.  Its sequence trunk is a 131,072-bp Enformer, with a
-2,891-dimensional expression context injected by FiLM after the convolution
-tower and inside transformer blocks 2, 5, and 8.  The assay head is not used
-for Hi-C; the hidden representation immediately before that head is returned.
+The SUCCEED checkpoint supplies sequence features. Its assay output head is
+unused; TRACE_hic consumes the hidden representation before that head.
 """
 
 from __future__ import annotations
@@ -25,9 +17,9 @@ import numpy as np
 import torch
 from torch import nn
 
-from hic.model import blocks
-from hic.model.native_global import NativeGlobalTransformer
-from hic.model.succeed_hic import AttentionPool1D
+from trace_hic.model import blocks
+from trace_hic.model.native_global import NativeGlobalTransformer
+from trace_hic.model.succeed_hic import AttentionPool1D
 
 
 # ---------------------------------------------------------------------------
@@ -66,12 +58,12 @@ def _load_external_enformer_symbols(
     The two projects are intentionally kept separate.  The root is inserted
     into ``sys.path`` only for this process; no external source file is copied
     or edited.  Returning the classes instead of importing them at module load
-    time keeps cached/Corgi-only workflows independent of the Enformer
+    time keeps cached/SUCCEED-only workflows independent of the Enformer
     dependency.
     """
 
     root = Path(enformer_root).expanduser().resolve()
-    package_dir = root / "corgi_enformer_model"
+    package_dir = root / "succeed_backbone"
     if not package_dir.is_dir():
         raise FileNotFoundError(
             "Enformer source package was not found under "
@@ -81,10 +73,10 @@ def _load_external_enformer_symbols(
     if root_string not in sys.path:
         sys.path.insert(0, root_string)
     try:
-        from corgi_enformer_model.multilayer_context_enformer import (
+        from succeed_backbone.multilayer_context_enformer import (
             MultiLayerContextEnformer,
         )
-        from corgi_enformer_model.pure_pytorch_enformer import PureEnformerConfig
+        from succeed_backbone.pure_pytorch_enformer import PureEnformerConfig
     except ModuleNotFoundError as error:
         raise RuntimeError(
             "Could not import the local multi-layer Enformer implementation "
@@ -602,7 +594,7 @@ def load_expression_npz(
     *,
     expected_size: int = 2891,
 ) -> np.ndarray:
-    """Load a prepared Corgi-order expression vector for Enformer context."""
+    """Load a prepared SUCCEED-order expression vector for Enformer context."""
 
     expression_path = Path(path).expanduser().resolve()
     if not expression_path.is_file():

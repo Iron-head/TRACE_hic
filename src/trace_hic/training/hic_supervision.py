@@ -27,7 +27,7 @@ def attach_hic_supervision_metadata(
 ) -> None:
     """Attach the fixed 10-kb resize geometry without reading a JSON report.
 
-    The live and cached Corgi trainers now support only the legacy 10-kb
+    The live and cached SUCCEED trainers now support only the legacy 10-kb
     supervision path.  ``hic_matrix_dir`` still selects which set of NPZ
     labels to load (for example raw counts or raw common-scale counts), but
     every selected directory is interpreted as 10-kb diagonals that are

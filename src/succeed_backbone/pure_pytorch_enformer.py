@@ -62,7 +62,7 @@ class PureEnformerConfig:
     dim_divisible_by: int = 128
     use_tf_gamma: bool = False
 
-    # These fields are ignored by the base Enformer and used by the Corgi
+    # These fields are ignored by the base Enformer and used by the SUCCEED
     # context branch. Keeping them in the same config makes full checkpoints
     # self-describing and still allows a plain Enformer JSON to be loaded.
     context_gene_count: int = 2891
@@ -751,7 +751,7 @@ def _poisson_loss(prediction: torch.Tensor, target: torch.Tensor) -> torch.Tenso
 
 
 class PurePyTorchContextEnformer(PurePyTorchEnformer):
-    """Enformer conditioned on a Corgi expression vector through FiLM."""
+    """Enformer conditioned on a SUCCEED expression vector through FiLM."""
 
     def __init__(
         self,

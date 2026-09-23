@@ -12,7 +12,6 @@ from typing import Any, Mapping, Sequence
 import numpy as np
 import torch
 
-from .assay_collapsed_dataset import CorgiEnformerAssayDataset
 
 
 FULL_TRANSCRIPTOME_CONTEXT_SCHEMA = "full_transcriptome_context_bank/1"
@@ -162,7 +161,7 @@ class FullTranscriptomeContextBank:
         expected_array = np.asarray(expected, dtype=np.int64)
         if not np.array_equal(np.asarray(self.context_ids, dtype=np.int64), expected_array):
             raise ValueError(
-                "Full-transcriptome context IDs/order do not match the Enformer Dataset"
+                "Full-transcriptome context IDs/order do not match the SUCCEED dataset"
             )
 
     def to(
@@ -189,45 +188,3 @@ class FullTranscriptomeContextBank:
                 dtype=torch.long,
             ),
         )
-
-
-class FullTranscriptomeCorgiEnformerAssayDataset(CorgiEnformerAssayDataset):
-    """Reuse packed DNA/targets and retain only the full-context row index."""
-
-    def __init__(
-        self,
-        *args: Any,
-        transcriptome_manifest: str | Path,
-        return_metadata: bool = False,
-        **kwargs: Any,
-    ) -> None:
-        self._return_full_transcriptome_metadata = bool(return_metadata)
-        super().__init__(*args, return_metadata=True, **kwargs)
-        self.transcriptome_bank = FullTranscriptomeContextBank(
-            transcriptome_manifest
-        )
-        self.transcriptome_bank.validate_context_ids(self.context_ids_all)
-
-    def __getitem__(self, index: int) -> dict[str, Any]:
-        sample = super().__getitem__(index)
-        sample.pop("context_vector", None)
-        if not self._return_full_transcriptome_metadata:
-            for key in (
-                "context_id",
-                "region_index",
-                "target_count",
-                "chrom",
-                "start",
-                "end",
-            ):
-                sample.pop(key, None)
-        return sample
-
-
-__all__ = [
-    "FULL_TRANSCRIPTOME_CONTEXT_SCHEMA",
-    "FullTranscriptomeContextBatch",
-    "FullTranscriptomeContextBank",
-    "TorchFullTranscriptomeContextBank",
-    "FullTranscriptomeCorgiEnformerAssayDataset",
-]

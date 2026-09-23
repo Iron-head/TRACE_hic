@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "multicell-rna-hic"
+name = "TRACE_hic"
 version = "0.1.0"
-description = "Frozen RNA-conditioned Enformer with a shared multi-cell Hi-C head"
+description = "TRACE_hic: SUCCEED-based multi-cell RNA-conditioned Hi-C prediction"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -24,11 +24,11 @@ dependencies = [
 test = ["pytest>=8,<9"]
 
 [project.scripts]
-multicell-hic-train = "hic.training.train_project_sparse_transcriptome_enformer_hic_balanced_clip_minmax_multicell:main"
-multicell-hic-predict = "hic.inference.predict:main"
-multicell-hic-rna-context = "hic.preprocessing.rna_tsv_to_context:main"
-multicell-hic-prepare-labels = "hic.preprocessing.prepare_balanced_clipped_hic:main"
+trace-hic-train = "trace_hic.training.train_project_sparse_transcriptome_enformer_hic_balanced_clip_minmax_multicell:main"
+trace-hic-predict = "trace_hic.inference.predict:main"
+trace-hic-rna-context = "trace_hic.preprocessing.rna_tsv_to_context:main"
+trace-hic-prepare-labels = "trace_hic.preprocessing.prepare_balanced_clipped_hic:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["hic*", "corgi_enformer_model*", "corgi_enformer_dataset*"]
+include = ["trace_hic*", "succeed_backbone*"]

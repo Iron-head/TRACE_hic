@@ -1,5 +1,5 @@
 {
-  "schema": "multicell_rna_hic_artifacts/1",
+  "schema": "TRACE_hic_artifacts/1",
   "stage1": {
     "path": "weights/stage1.pt",
     "source_filename": "sparse_transcriptome_stage1_v2/last.pt",

@@ -28,24 +28,24 @@ _SRC_DIR = _REPO_ROOT / "src"
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
-from hic.data.multicell_live_enformer_dataset import (
+from trace_hic.data.multicell_live_enformer_dataset import (
     BalancedMultiCellLiveEnformerDataset,
     CellTypeContextSpec,
     parse_celltype_context_specs,
 )
-from hic.model.enformer_hic_standalone import (
+from trace_hic.model.enformer_hic_standalone import (
     HIC_MATRIX_SIZE,
     HIC_WINDOW_BP,
     EnformerHiCModel,
 )
-from hic.model.sparse_transcriptome_enformer_hic_standalone import (
+from trace_hic.model.sparse_transcriptome_enformer_hic_standalone import (
     SPARSE_TRANSCRIPTOME_FRAMEWORK,
     FrozenSparseTranscriptomeEnformerExtractor,
     SparseTranscriptomeEndToEndHiCModel,
     SparseTranscriptomeTwoMegabaseEncoder,
 )
-from hic.training.hic_supervision import attach_hic_supervision_metadata
-from hic.training.train_enformer_hic_live import (
+from trace_hic.training.hic_supervision import attach_hic_supervision_metadata
+from trace_hic.training.train_enformer_hic_live import (
     _apply_diagonal_mask,
     _oe_pearson,
 )

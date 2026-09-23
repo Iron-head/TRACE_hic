@@ -23,22 +23,22 @@ _SRC_DIR = _REPO_ROOT / "src"
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
-from hic.data.multicell_live_enformer_dataset import CellTypeContextSpec
-from hic.model.enformer_hic_standalone import EnformerHiCModel
-from hic.model.project_sparse_transcriptome_enformer_hic_standalone import (
+from trace_hic.data.multicell_live_enformer_dataset import CellTypeContextSpec
+from trace_hic.model.enformer_hic_standalone import EnformerHiCModel
+from trace_hic.model.project_sparse_transcriptome_enformer_hic_standalone import (
     FrozenProjectSparseTranscriptomeEnformerExtractor,
 )
-from hic.model.sparse_transcriptome_enformer_hic_standalone import (
+from trace_hic.model.sparse_transcriptome_enformer_hic_standalone import (
     SPARSE_TRANSCRIPTOME_FRAMEWORK,
     SparseTranscriptomeEndToEndHiCModel,
     SparseTranscriptomeTwoMegabaseEncoder,
 )
-from hic.model.sparse_transcriptome_model_contract import (
+from trace_hic.model.sparse_transcriptome_model_contract import (
     CellTranscriptomeContext,
     SparseTranscriptomeModelContract,
 )
-from hic.training.hic_supervision import attach_hic_supervision_metadata
-from hic.training.train_sparse_transcriptome_enformer_hic_multicell import (
+from trace_hic.training.hic_supervision import attach_hic_supervision_metadata
+from trace_hic.training.train_sparse_transcriptome_enformer_hic_multicell import (
     LiveSparseTranscriptomeMultiCellHiCModule,
     _loader,
     _preflight_celltype_data,

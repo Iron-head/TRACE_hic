@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Corgi-style multi-layer context conditioning for the local Enformer.
+"""SUCCEED-style multi-layer context conditioning for the local Enformer.
 
 The base Enformer implementation and its checkpoint-compatible parameter
 names remain unchanged.  This subclass inserts residual FiLM adapters after
@@ -55,7 +55,7 @@ class MultiLayerContextEnformer(PurePyTorchEnformer):
     newly initialized adapter produces exactly the pretrained sequence trunk.
     The selected transformer FiLM is applied after the feed-forward LayerNorm
     and before the first feed-forward Linear, matching the residual structure
-    used by Corgi.
+    used by SUCCEED.
     """
 
     def __init__(

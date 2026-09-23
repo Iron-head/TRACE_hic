@@ -1,9 +1,10 @@
-# Multi-cell RNA-conditioned Hi-C
+# TRACE_hic
 
-This repository contains the code needed to train a shared Hi-C prediction head
-on multiple human cell types and to predict one 2,097,152-bp window from hg38
-DNA and one cell's RNA context. The Stage-I sparse-transcriptome Enformer is
-frozen during Hi-C training. The Hi-C head is trained with balanced, clipped
+TRACE_hic predicts Hi-C from DNA sequence and a cell's RNA context. Its
+DNA representation model is SUCCEED, which is frozen while the shared
+multi-cell TRACE_hic prediction head is trained. This repository trains the
+head across multiple human cell types and predicts one 2,097,152-bp hg38
+window at a time. The head is trained with balanced, clipped
 10-kb contacts, resized to 256 × 256, transformed by `log1p`, and normalized
 per window over valid pixels. The output is a 256 × 256 matrix in `[0, 1]`.
 It is **not** an estimate of raw contact counts.
@@ -36,7 +37,7 @@ DATA_ROOT/
 Prepare each RNA context from TPM tables with `gene_id` and `TPM` columns:
 
 ```bash
-multicell-hic-rna-context --rna-tsv sample1.tsv sample2.tsv \
+trace-hic-rna-context --rna-tsv sample1.tsv sample2.tsv \
   --celltype GM12878 --rna-protocol total_rna \
   --output DATA_ROOT/GM12878/RNA/context.npz
 ```
@@ -46,7 +47,7 @@ determine a cell-specific 93rd-percentile clipping threshold using your chosen
 training protocol, then run:
 
 ```bash
-multicell-hic-prepare-labels --cool INPUT.cool \
+trace-hic-prepare-labels --cool INPUT.cool \
   --clip-threshold THRESHOLD --output-dir DATA_ROOT/GM12878/hic_matrix_balanced_clip93
 ```
 
@@ -57,10 +58,10 @@ reference DNA, gap regions, and clipping protocol across cells.
 ## Train the Hi-C head
 
 ```bash
-multicell-hic-train --data-root DATA_ROOT \
+trace-hic-train --data-root DATA_ROOT \
   --celltypes GM12878,IMR90,H1-hESC,K562 \
   --save-path results/multicell_run \
-  --devices 4 --batch-size-per-device 6 --enformer-tile-batch-size 2 \
+  --devices 4 --batch-size-per-device 6 --succeed-tile-batch-size 2 \
   --precision bf16-mixed
 ```
 
@@ -74,7 +75,7 @@ be overridden with the corresponding CLI flags.
 ## Predict without experimental Hi-C
 
 ```bash
-multicell-hic-predict \
+trace-hic-predict \
   --context-npz DATA_ROOT/HepG2/RNA/context.npz \
   --fasta DATA_ROOT/dna_sequence/chr15.fa.gz \
   --chromosome chr15 --start 44000000 \
@@ -90,10 +91,11 @@ prediction. Use `--precision float32` for CPU execution; a GPU is recommended.
 ## Provenance and publication
 
 The Hi-C components were extracted from the local SUCCEED project. The
-Stage-I model implementation was extracted from the local `enfpcot` project
+SUCCEED backbone implementation was extracted from the local Stage-I source
 to remove runtime dependencies on a sibling checkout. The exact trained
 gene vocabulary and model contract are included. Checkpoint formats and RNA
-provenance hashes are validated when loading the model.
+provenance hashes are validated when loading the model. Historical identifiers
+inside the model contract and checkpoint are preserved for weight compatibility.
 
 The source projects did not contain a top-level license covering these
 extracted files. Confirm redistribution permission and choose a repository

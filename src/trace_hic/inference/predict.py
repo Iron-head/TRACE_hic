@@ -1,4 +1,4 @@
-"""Predict one label-free Hi-C window from hg38 DNA and an RNA context."""
+"""Predict one TRACE_hic window from hg38 DNA and an RNA context."""
 
 from __future__ import annotations
 
@@ -11,27 +11,27 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from hic.model.enformer_hic_standalone import (
+from trace_hic.model.enformer_hic_standalone import (
     ENFORMER_CONTEXT_BP,
     ENFORMER_FLANK_BP,
     HIC_MATRIX_SIZE,
     HIC_WINDOW_BP,
 )
-from hic.model.project_sparse_transcriptome_enformer_hic_standalone import (
+from trace_hic.model.project_sparse_transcriptome_enformer_hic_standalone import (
     FrozenProjectSparseTranscriptomeEnformerExtractor,
 )
-from hic.model.sparse_transcriptome_enformer_hic_standalone import (
+from trace_hic.model.sparse_transcriptome_enformer_hic_standalone import (
     SparseTranscriptomeTwoMegabaseEncoder,
 )
-from hic.model.sparse_transcriptome_model_contract import (
+from trace_hic.model.sparse_transcriptome_model_contract import (
     CellTranscriptomeContext,
     SparseTranscriptomeModelContract,
 )
-from hic.model.unit_interval_enformer_hic import UnitIntervalEnformerHiCModel
-from hic.training.train_project_sparse_transcriptome_enformer_hic_balanced_clip_minmax_multicell import (
+from trace_hic.model.unit_interval_enformer_hic import UnitIntervalEnformerHiCModel
+from trace_hic.training.train_project_sparse_transcriptome_enformer_hic_balanced_clip_minmax_multicell import (
     BALANCED_CLIP_MINMAX_MULTICELL_CHECKPOINT_SCHEMA,
 )
-from hic.training.train_project_sparse_transcriptome_enformer_hic_multicell import (
+from trace_hic.training.train_project_sparse_transcriptome_enformer_hic_multicell import (
     PROJECT_MULTICELL_CHECKPOINT_SCHEMA,
 )
 
@@ -135,7 +135,10 @@ def parse_args(argv=None):
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--precision", choices=("bf16", "float32"), default="bf16")
     parser.add_argument("--tile-batch-size", type=int, default=2)
-    parser.add_argument("--enformer-root", type=Path, default=ROOT / "src")
+    parser.add_argument(
+        "--succeed-root", dest="enformer_root", metavar="PATH",
+        type=Path, default=ROOT / "src",
+    )
     return parser.parse_args(argv)
 
 
@@ -168,7 +171,7 @@ def predict(args):
     if not np.isfinite(prediction).all():
         raise RuntimeError("Prediction contains nonfinite values")
     metadata = {
-        "schema": "multicell_rna_hic_prediction/1",
+        "schema": "TRACE_hic_prediction/1",
         "celltype": context.celltype,
         "chromosome": args.chromosome,
         "start": args.start,

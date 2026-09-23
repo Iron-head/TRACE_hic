@@ -24,12 +24,12 @@ import numpy as np
 import torch
 from torch import nn
 
-from hic.model.enformer_hic_standalone import (
+from trace_hic.model.enformer_hic_standalone import (
     ENFORMER_INPUT_BP,
     ENFORMER_OUTPUT_TOKENS,
     ENFORMER_TOKEN_BP,
 )
-from hic.model.transcriptome_enformer_hic_standalone import (
+from trace_hic.model.transcriptome_enformer_hic_standalone import (
     TranscriptomeEndToEndHiCModel,
     TranscriptomeTwoMegabaseEncoder,
 )
@@ -46,7 +46,7 @@ def _load_external_sparse_symbols(
     """Import the exact sparse model, configs and mmap context bank."""
 
     root = Path(enformer_root).expanduser().resolve()
-    package_dir = root / "corgi_enformer_model"
+    package_dir = root / "succeed_backbone"
     if not package_dir.is_dir():
         raise FileNotFoundError(
             "Enformer source package was not found under "
@@ -56,14 +56,14 @@ def _load_external_sparse_symbols(
     if root_string not in sys.path:
         sys.path.insert(0, root_string)
     try:
-        from corgi_enformer_dataset.full_transcriptome_context_dataset import (
+        from succeed_backbone.context_bank import (
             FullTranscriptomeContextBank,
         )
-        from corgi_enformer_model.pure_pytorch_enformer import PureEnformerConfig
-        from corgi_enformer_model.sparse_transcriptome_enformer import (
+        from succeed_backbone.pure_pytorch_enformer import PureEnformerConfig
+        from succeed_backbone.sparse_transcriptome_enformer import (
             SparseTranscriptomeContextEnformer,
         )
-        from corgi_enformer_model.sparse_transcriptome_router import (
+        from succeed_backbone.sparse_transcriptome_router import (
             SparseTranscriptomeRouterConfig,
         )
     except ModuleNotFoundError as error:

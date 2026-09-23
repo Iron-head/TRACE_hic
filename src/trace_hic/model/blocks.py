@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import numpy as np
 import copy
 
-from hic.model.succeed_hic import AttentionPool1D
+from trace_hic.model.succeed_hic import AttentionPool1D
 
 class ConvBlock(nn.Module):
     def __init__(self, size, stride = 2, hidden_in = 64, hidden = 64):
@@ -125,7 +125,7 @@ class EncoderSplit(Encoder):
             if model_epi is None:
                 raise RuntimeError(
                     "`EncoderSplit(..., succeed=True)` requires a pretrained SUCCEED model. "
-                    "Call `hic.model.blocks.set_succeed_model(model)` before constructing the Hi-C model, "
+                    "Call `trace_hic.model.blocks.set_succeed_model(model)` before constructing the Hi-C model, "
                     "or disable SUCCEED via `succeed=False`."
                 )
             self.succeed_model = model_epi

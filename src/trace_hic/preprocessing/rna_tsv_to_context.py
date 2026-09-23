@@ -18,13 +18,13 @@ _SRC_DIR = _REPO_ROOT / "src"
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
-from hic.model.sparse_transcriptome_model_contract import (
+from trace_hic.model.sparse_transcriptome_model_contract import (
     CELL_CONTEXT_SCHEMA,
     CellTranscriptomeContext,
     SparseTranscriptomeModelContract,
     sha256_file,
 )
-from hic.preprocessing.transcriptome_context_utils import (
+from trace_hic.preprocessing.transcriptome_context_utils import (
     parse_quantification_file,
     single_context_features,
 )
