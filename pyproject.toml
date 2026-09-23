@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multicell-rna-hic"
+version = "0.1.0"
+description = "Frozen RNA-conditioned Enformer with a shared multi-cell Hi-C head"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.5,<3",
+  "pytorch-lightning>=2.5,<3",
+  "numpy>=1.26,<3",
+  "pandas>=2.2,<3",
+  "scipy>=1.14,<2",
+  "scikit-image>=0.24,<1",
+  "h5py>=3.10,<4",
+  "pyBigWig>=0.3.20,<1",
+  "cooler>=0.10,<1",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
+[project.scripts]
+multicell-hic-train = "hic.training.train_project_sparse_transcriptome_enformer_hic_balanced_clip_minmax_multicell:main"
+multicell-hic-predict = "hic.inference.predict:main"
+multicell-hic-rna-context = "hic.preprocessing.rna_tsv_to_context:main"
+multicell-hic-prepare-labels = "hic.preprocessing.prepare_balanced_clipped_hic:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["hic*", "corgi_enformer_model*", "corgi_enformer_dataset*"]

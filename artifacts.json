@@ -1,0 +1,15 @@
+{
+  "schema": "multicell_rna_hic_artifacts/1",
+  "stage1": {
+    "path": "weights/stage1.pt",
+    "source_filename": "sparse_transcriptome_stage1_v2/last.pt",
+    "sha256": "fb654471a8be4be7dd614df88f175a92cc374ee0f4552a72a857560902b9daad"
+  },
+  "stage2": {
+    "path": "weights/stage2.ckpt",
+    "source_filename": "mc_sparse_transcriptome_rna_hic_balanced_clip93_window_minmax_live/models/epoch=20-step=15582.ckpt",
+    "sha256": "a4265ec4f54e2093933b0488ffb09283125900de3e1ca0b66958856a3cce74cd"
+  },
+  "model_contract": "assets/model_contract/model_contract.json",
+  "stage2_training_cells": ["GM12878", "IMR90", "H1-hESC", "K562"]
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": "succeed_sparse_transcriptome_model_contract/1",
+  "framework": "pure_pytorch_sparse_full_transcriptome_enformer",
+  "checkpoint_format_version": 5,
+  "checkpoint_transcriptome_manifest_sha256": "68e289d55087871f462729160cfe994d598901c196230995d2102c2596654836",
+  "gene_count": 64217,
+  "feature_dim": 3,
+  "feature_names": [
+    "scaled_log2_tpm",
+    "within_sample_percentile",
+    "detected"
+  ],
+  "protocol_to_id": {
+    "total_rna": 0,
+    "polyA_plus_rna": 1
+  },
+  "context_transform": {
+    "sample_scope": "one_context_only",
+    "replicate_aggregation": "mean_tpm_over_files_where_gene_is_annotated",
+    "protocol_policy": "prefer_total_rna_else_polyA_plus_rna",
+    "min_tpm": 0.1,
+    "log2_tpm_cap": 16.0,
+    "percentile_method": "within_context_average_rank_with_ties",
+    "uses_cross_context_statistics": false,
+    "uses_hard_top_k": false
+  },
+  "router_interface": {
+    "gene_count": 64217,
+    "feature_dim": 3,
+    "protocol_count": 2,
+    "state_dim": 256,
+    "state_token_count": 32
+  },
+  "gene_vocabulary": {
+    "file": "gene_ids.npy",
+    "sha256": "06d5e6422a524c829d3f7cec0af0f3a69e222db6f6db6bf77234e5450e91b9f5"
+  },
+  "migration_provenance": {
+    "source_checkpoint": "/media/wyy/16TDisk/Pycharm_projects/enfpcot/runs/sparse_transcriptome_stage1_v2/best.pt",
+    "source_reference_manifest": "/media/wyy/16TDisk/Pycharm_projects/enfpcot/yangyz1230space_enformer_dataset/corgi_human_pairing/full_transcriptome_context/manifest.json",
+    "source_gene_table_sha256": "d3872182bfa51f223ec79485961f95585b7be9d4cdc2817283dad156fc404eb1"
+  }
+}
