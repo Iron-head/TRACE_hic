@@ -31,6 +31,8 @@ This release trains the **Hi-C head with SUCCEED frozen**. It does not include a
 
 Use Python 3.10 or newer. A CUDA-capable GPU and a matching PyTorch installation are recommended for training and prediction.
 
+For virtual environment creation, CUDA/CPU PyTorch installation, and verification commands, see the [environment setup guide](docs/environment.md).
+
 From the repository root:
 
 ```bash
