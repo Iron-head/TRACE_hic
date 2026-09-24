@@ -36,8 +36,10 @@ For virtual environment creation, CUDA/CPU PyTorch installation, and verificatio
 From the repository root:
 
 ```bash
-python -m pip install -e .
+python -m pip install -r requirements.txt
 ```
+
+`requirements.txt` installs this repository in editable mode and reads the dependency versions from `pyproject.toml`.
 
 The installed commands are `trace-hic-rna-context`, `trace-hic-prepare-labels`, `trace-hic-train`, and `trace-hic-predict`. Run any command with `--help` for its full options.
 

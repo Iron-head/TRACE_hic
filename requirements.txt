@@ -1,0 +1,3 @@
+# Install the project and its dependencies from pyproject.toml.
+# Install the appropriate PyTorch CUDA/CPU build first; see docs/environment.md.
+-e .

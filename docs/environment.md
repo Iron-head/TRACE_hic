@@ -22,10 +22,10 @@ For CPU-only setup, choose **CPU** in the same selector. CPU is suitable for set
 Then install the project and its remaining dependencies:
 
 ```bash
-python -m pip install -e .
+python -m pip install -r requirements.txt
 ```
 
-`-e` installs the local source in editable mode. The package includes PyTorch Lightning, NumPy, pandas, SciPy, scikit-image, h5py, pyBigWig, and Cooler through `pyproject.toml`. You do not need to install these separately.
+`requirements.txt` installs the local source in editable mode. Dependency names and version ranges are maintained in `pyproject.toml`, so the two files cannot drift apart. The package includes PyTorch Lightning, NumPy, pandas, SciPy, scikit-image, h5py, pyBigWig, and Cooler. You do not need to install these separately.
 
 ## 3. Check the installation
 
